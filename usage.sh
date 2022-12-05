@@ -1,10 +1,11 @@
 # Script to retrieve data usage of NextCloud users
 #
 # Setting variables
-nc_dir=/data/sites/web/louscornerbe/subsites/nc.louscorner.be/nextcloud
+nc_bin_dir=/snap/bin
+nc_data_dir=/mnt/data
 days=1
 
-users=$(php $nc_dir/occ user:list|awk '{print $2}'|cut -d: -f1)
+users=$($nc_bin_dir/nextcloud.occ user:list|awk '{print $2}'|cut -d: -f1)
 
 # starting Script
 #
@@ -15,6 +16,6 @@ echo "-------------------------------------------------------"
 for i in $users;
         do
                 echo -e "user $i\n";
-                find $nc_dir/data/$i -type f -mtime -$days -printf %Td/%Tm/%TY-%TH:%TM\\t%P\\n;
+                find $nc_data_dir/$i -type f -mtime -$days -printf %Td/%Tm/%TY-%TH:%TM\\t%P\\n;
                 echo "";
         done
